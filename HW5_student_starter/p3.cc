@@ -76,7 +76,7 @@ class Dynarray {
         delete[] data;
         data = new_data;
         len = other.len;
-        return *this;
+        return *this;}
     }
 
     Dynarray(Dynarray &&other) noexcept : data(other.data), len(other.len) {
