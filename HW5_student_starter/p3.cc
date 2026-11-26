@@ -102,10 +102,7 @@ class Dynarray {
     return data[i];
   }
   bool operator==(const Dynarray &other) const {
-    if (len != other.len) {
-      return false;
-    }
-    return std::equal(data, data + len, other.data);
+    return len == other.len && std::equal(data, data + len, other.data);
   }
   bool operator!=(const Dynarray &other) const {
     return !(*this == other);
