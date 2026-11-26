@@ -69,14 +69,13 @@ class Dynarray {
     }
     Dynarray &operator=(const Dynarray &other) {
         if (this != &other) {
-            Dynarray temp(other);
-            int* temp_data = data;
-            data = temp.data;
-            temp.data = temp_data;
-            std::size_t temp_len = len;
-            len = temp.len;
-            temp.len = temp_len;
+          int *new_data = new int[other.len];
+          for (std::size_t i = 0; i < other.len; ++i) {
+              new_data[i] = other.data[i];    
         }
+        delete[] data;
+        data = new_data;
+        len = other.len;
         return *this;
     }
 
@@ -101,7 +100,10 @@ class Dynarray {
     return data[i];
   }
   bool operator==(const Dynarray &other) const {
-    return len == other.len && std::equal(data, data + len, other.data);
+    if (len != other.len) {
+      return false;
+    }
+    return std::equal(data, data + len, other.data);
   }
   bool operator!=(const Dynarray &other) const {
     return !(*this == other);
