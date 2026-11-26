@@ -8,7 +8,7 @@ class Dynarray {
   int *data;
   std::size_t len;
   public:
-    Dynarray() : data(nullptr), len(0) {}
+    explicit Dynarray() : data(nullptr), len(0) {}
     explicit Dynarray(std::size_t n) : data(new int[n]), len(n) {}
     Dynarray(std::size_t n, int x) : data(new int[n]), len(n) {
         for (std::size_t i = 0; i < len; ++i) {
@@ -19,6 +19,24 @@ class Dynarray {
         for (std::size_t i = 0; i < len; ++i) {
             data[i] = begin[i];
         }
+    }
+    std::size_t size() const {
+        return len;
+    }
+    bool empty() const {
+        return len == 0;
+    }
+    int &at(std::size_t i) {
+        if (i >= len) {
+            throw std::out_of_range("Index out of range");
+        }
+        return data[i];
+    }
+    const int &at(std::size_t i) const {
+        if (i >= len) {
+            throw std::out_of_range("Index out of range");
+        }
+        return data[i];
     }
     ~Dynarray() {
         delete[] data;
