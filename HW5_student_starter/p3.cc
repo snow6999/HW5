@@ -25,7 +25,7 @@ class Dynarray {
   using reference = value_type&;
   using const_pointer = const value_type*;
   using const_reference = const value_type&;
-      explicit Dynarray() : data(nullptr), len(0) {}
+    Dynarray() : data(nullptr), len(0) {}
     explicit Dynarray(std::size_t n) : data(new int[n]), len(n) {}
     Dynarray(std::size_t n, int x) : data(new int[n]), len(n) {
         for (std::size_t i = 0; i < len; ++i) {
@@ -65,12 +65,13 @@ class Dynarray {
     }
     Dynarray &operator=(const Dynarray &other) {
         if (this != &other) {
-            delete[] data;
-            len = other.len;
-            data = new int[len];
-            for (std::size_t i = 0; i < len; ++i) {
-                data[i] = other.data[i];
-            }
+            Dynarray temp(other);
+            int* temp_data = data;
+            data = temp.data;
+            temp.data = temp_data;
+            std::size_t temp_len = len;
+            len = temp.len;
+            temp.len = temp_len;
         }
         return *this;
     }
