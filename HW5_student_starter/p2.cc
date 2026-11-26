@@ -62,6 +62,17 @@ class Dynarray {
         other.data = nullptr;
         other.len = 0;
     }
+    Dynarray &operator=(Dynarray &&other) noexcept {
+        if (this != &other) {
+            delete[] data;
+            data = other.data;
+            len = other.len;
+            other.data = nullptr;
+            other.len = 0;
+        }
+        return *this;
+    }
+    
 };
 
 #endif // DYNARRAY_HPP

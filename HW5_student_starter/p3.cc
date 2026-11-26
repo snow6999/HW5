@@ -25,6 +25,70 @@ class Dynarray {
   using reference = value_type&;
   using const_pointer = const value_type*;
   using const_reference = const value_type&;
+      explicit Dynarray() : data(nullptr), len(0) {}
+    explicit Dynarray(std::size_t n) : data(new int[n]), len(n) {}
+    Dynarray(std::size_t n, int x) : data(new int[n]), len(n) {
+        for (std::size_t i = 0; i < len; ++i) {
+            data[i] = x;
+        }
+    }
+    Dynarray(const int *begin, const int *end) : data(new int[end - begin]), len(end - begin) {
+        for (std::size_t i = 0; i < len; ++i) {
+            data[i] = begin[i];
+        }
+    }
+    std::size_t size() const {
+        return len;
+    }
+    bool empty() const {
+        return len == 0;
+    }
+    int &at(std::size_t i) {
+        if (i >= len) {
+            throw std::out_of_range("Index out of range");
+        }
+        return data[i];
+    }
+    const int &at(std::size_t i) const {
+        if (i >= len) {
+            throw std::out_of_range("Index out of range");
+        }
+        return data[i];
+    }
+    ~Dynarray() {
+        delete[] data;
+    } 
+    Dynarray(const Dynarray &other) : data(new int[other.len]), len(other.len) {
+        for (std::size_t i = 0; i < len; ++i) {
+            data[i] = other.data[i];
+        }
+    }
+    Dynarray &operator=(const Dynarray &other) {
+        if (this != &other) {
+            delete[] data;
+            len = other.len;
+            data = new int[len];
+            for (std::size_t i = 0; i < len; ++i) {
+                data[i] = other.data[i];
+            }
+        }
+        return *this;
+    }
+
+    Dynarray(Dynarray &&other) noexcept : data(other.data), len(other.len) {
+        other.data = nullptr;
+        other.len = 0;
+    }
+    Dynarray &operator=(Dynarray &&other) noexcept {
+        if (this != &other) {
+            delete[] data;
+            data = other.data;
+            len = other.len;
+            other.data = nullptr;
+            other.len = 0;
+        }
+        return *this;
+    }
   reference operator[](size_type i) {
     return data[i];
   } 
