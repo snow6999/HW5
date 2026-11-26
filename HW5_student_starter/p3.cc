@@ -26,7 +26,11 @@ class Dynarray {
   using const_pointer = const value_type*;
   using const_reference = const value_type&;
     Dynarray() : data(nullptr), len(0) {}
-    explicit Dynarray(std::size_t n) : data(new int[n]), len(n) {}
+    explicit Dynarray(std::size_t n) : data(new int[n]), len(n) {
+        for (std::size_t i = 0; i < len; ++i) {
+            data[i] = 0;
+        }   
+    }
     Dynarray(std::size_t n, int x) : data(new int[n]), len(n) {
         for (std::size_t i = 0; i < len; ++i) {
             data[i] = x;
@@ -45,13 +49,13 @@ class Dynarray {
     }
     int &at(std::size_t i) {
         if (i >= len) {
-            throw std::out_of_range("Index out of range");
+            throw std::out_of_range("Index out of range!");
         }
         return data[i];
     }
     const int &at(std::size_t i) const {
         if (i >= len) {
-            throw std::out_of_range("Index out of range");
+            throw std::out_of_range("Index out of range!");
         }
         return data[i];
     }
